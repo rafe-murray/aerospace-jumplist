@@ -28,6 +28,15 @@ class Aerospace_Jumplist:
     empty_re = re.compile(r"\s*")
 
     @staticmethod
+    def clear():
+        with Aerospace_Jumplist.head_path.open("w"):
+            pass
+        with Aerospace_Jumplist.list_path.open("w"):
+            pass
+        with Aerospace_Jumplist.is_internal_jump_path.open("w"):
+            pass
+
+    @staticmethod
     def get_head() -> int:
         with Aerospace_Jumplist.head_path.open("r") as head_file:
             line = head_file.readline()
@@ -121,6 +130,10 @@ def main():
         description="Manage Aerospace workspace history using a vim-like jumplist"
     )
     subparsers = parser.add_subparsers(required=True)
+
+    clear_parser = subparsers.add_parser("clear", help="Clear the jumplist")
+    clear_parser.set_defaults(func=Aerospace_Jumplist.clear)
+
     push_parser = subparsers.add_parser(
         "push",
         help="Add an entry to the jumplist. All entries after the (previous) head of the list are removed",
